@@ -1,0 +1,24 @@
+!#/bin/bash
+
+echo 'Enter your first name:'
+read fname
+echo "Enter your last name:"
+reed lname
+
+echo 'Your username will be:'
+USERNAME=='$fname$lname'
+
+echo Creating home directory for $USERNAME
+mkdir '/home/$USERNAME'
+
+TODAY=`date +%Y-%m-%d`
+echo "Account created on $TODAY"
+
+whoami=”whoami”
+echo "Script run by $whoami"
+
+userd $USERNAME
+
+if [ '$USERNAME' -eq root ]; then
+ echo "Root account detected"
+fi
