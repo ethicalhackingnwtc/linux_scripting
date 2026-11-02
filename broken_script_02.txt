@@ -1,0 +1,38 @@
+#!/bin/bash
+
+echo "Do you seek the wisdom of the magic 8 ball? (y/n)"
+read PLAY
+
+CLEANPLAY=$(echo "$PLAY" | cut -c 1 | tr '[:upper:]' '[:lower:]')
+echo "You chose: $CLEANPLAY"
+
+while [ "$CLEANPLAY" = "y" ]; do
+
+    echo "Let's play a game!"
+    echo "What is the wisdom you seek from the magic 8 ball!?!?!"
+    read QUEST
+
+    RNUM=$(( (RANDOM % 8) + 1 ))
+    echo "Your random number is: $RNUM"
+
+    if [ "$RNUM" = 1 ]; then
+        echo "It is uncertain"
+    elif [ "$RNUM" = 2 ]; then
+        echo "Signs point to yes!"
+    elif [ "$RNUM" = 3 ]; then
+        echo "How about NO"
+    if [ "$RNUM" = 4 ]; then
+        echo "Try again"
+    elif [ "$RNUM" = 5 ]; then
+        echo "Not likely"
+    elif [ "$RNUM" = 6 ]; then
+        echo "It is in your future"
+    elif [ "$RMUM" = 7 ]; then
+        echo "Probably not in your lifetime"
+    elif [ "$RNUM" = 8 ]; then
+        echo "Absolutely... NOT"
+    fi
+
+    echo "Do you want to play again? (y/n)"
+    read PLAY2
+
