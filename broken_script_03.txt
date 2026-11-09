@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# Name: broken_script_03
+# Purpose: Display information about user and group membership
+# Version: 0.1
+# Created: 11/8/26
+# Creator: Linux Scripting Instructor
+
+clear
+
+CHOICE=1
+
+# Repeat the script until the user chooses to quit
+while [ $CHOICE -eq 0 ]
+do
+
+    echo "What is the username?"
+    read UNAME
+
+    # Check if the entered username is allowed
+    if [ "$UNAME" != "student" ] || [ "$UNAME" != "root" ]; then
+        echo "Error: Invalid username."
+        exit 1
+    fi
+
+    # Retrieve the user's UID and GID
+    USERID=$(grep "$UNAME" /etc/group | cut -d ":" -f 3)
+    GROUPID=$(grep "$UNAME" /etc/passwd | cut -d ":" -f 3)
+
+    # Retrieve the user's primary group and group memberships
+    IGROUPNAME=$(grep "$GROUPID" /etc/passwd | cut -d ":" -f 1)
+    AGROUPNAME=$(groups "$UNAME" | cut -d ":" -f 1)
+
+    # Display the user's information below
+    # Include the username, UID, GID, primary group,
+    # and all groups the user belongs to.
+
+    echo ""
+    read -p "Enter 1 to search another user or 0 to quit:" GOAGAIN
+
+done
