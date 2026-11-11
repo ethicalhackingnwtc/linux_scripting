@@ -1,0 +1,5 @@
+1:Ribeye Steak:99
+2:Oreos:2
+3:Cupcakes:10
+4:Granola Bars:8
+5:Air Head:7
