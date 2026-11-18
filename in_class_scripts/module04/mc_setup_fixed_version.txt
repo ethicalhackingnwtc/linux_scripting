@@ -1,0 +1,79 @@
+
+#!/bin/bash
+
+# Minecraft Server Configuration Manager
+# Allows administrators to update Minecraft server settings.
+
+# STEP 1: DEFINE CONFIGURATION FILE
+# - Store the filename in a variable for easier maintenance.
+# - Changing this variable updates which file the script uses.
+
+FILE="server.properties"
+
+echo "Minecraft Server Configuration"
+echo "------------------------------"
+
+# STEP 2: CHECK IF THE FILE EXISTS
+# - The -f operator checks if a regular file exists; ! means NOT.
+# - exit 1 stops the script if the configuration file is missing.
+
+if [[ ! -f "$FILE" ]]; then
+    echo "Error: Configuration file not found!"
+    exit 1
+fi
+
+# STEP 3: COLLECT USER INPUT
+# - read -p displays a prompt and stores the user's response.
+# - Each response is saved in a variable for later use.
+
+read -p "Enter game mode: " GMODE
+read -p "Enter difficulty: " DIFF
+read -p "Enable PVP (true/false): " PVP
+
+# STEP 4: CONVERT INPUT TO LOWERCASE
+# - ${VARIABLE,,} converts all letters in a variable to lowercase.
+# - This allows inputs like HARD, Hard, and hard to be treated equally.
+
+GMODE=${GMODE,,}
+DIFF=${DIFF,,}
+PVP=${PVP,,}
+
+# STEP 5: VALIDATE USER INPUT
+# - != means "not equal" and && requires both conditions to be true.
+# - Invalid settings display an error and terminate the script.
+
+if [[ "$GMODE" != "survival" && "$GMODE" != "creative" && "$GMODE" != "adventure" && "$GMODE" != "spectator" ]]; then
+    echo "Error: Invalid game mode!"
+    exit 1
+fi
+
+if [[ "$DIFF" != "peaceful" && "$DIFF" != "easy" && "$DIFF" != "normal" && "$DIFF" != "hard" ]]; then
+    echo "Error: Invalid difficulty!"
+    exit 1
+fi
+
+if [[ "$PVP" != "true" && "$PVP" != "false" ]]; then
+    echo "Error: Invalid PVP setting!"
+    exit 1
+fi
+
+# STEP 6: CREATE A BACKUP
+# - cp creates a backup of the original configuration before editing.
+# - || exit 1 stops the script if the backup command fails.
+
+cp "$FILE" "$FILE.bak" || exit 1
+
+# STEP 7: UPDATE CONFIGURATION USING SED
+# - sed -i edits the file directly; ^ matches the start of a line and .* matches the remaining text.
+# - Double quotes expand variables; || exit 1 stops execution if sed fails.
+
+sed -i "s/^gamemode=.*/gamemode=$GMODE/" "$FILE" || exit 1
+sed -i "s/^difficulty=.*/difficulty=$DIFF/" "$FILE" || exit 1
+sed -i "s/^pvp=.*/pvp=$PVP/" "$FILE" || exit 1
+
+# STEP 8: DISPLAY UPDATED SETTINGS
+# - echo displays a confirmation after the edits succeed.
+# - grep -E displays the gamemode, difficulty, and PVP settings.
+
+echo "Configuration updated successfully!"
+grep -E '^(gamemode|difficulty|pvp)=' "$FILE"
